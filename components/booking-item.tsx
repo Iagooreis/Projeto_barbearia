@@ -1,6 +1,6 @@
 import { Avatar, AvatarFallback, AvatarImage } from "@radix-ui/react-avatar"
 import { Card, CardContent } from "./ui/card"
-import { Badge } from "lucide-react"
+import { Badge } from "./ui/badge"
 
 const BookingItem = () => {
   return (
