@@ -1,17 +1,21 @@
 import Header from "@/components/header"
-import { Badge, SearchIcon } from "lucide-react"
+import { SearchIcon } from "lucide-react"
 import { Input } from "@/components/ui/input"
 import { Button } from "@/components/ui/button"
 import Image from "next/image"
 import { Card, CardContent } from "@/components/ui/card"
-import { Avatar } from "@radix-ui/react-avatar"
-import { AvatarImage } from "@radix-ui/react-avatar"
-import { AvatarFallback } from "@radix-ui/react-avatar"
 import { db } from "@/lib/prisma"
 import BarberShopItems from "@/components/barbershop-items"
+import { quickSearchOptions } from "./_constants/search"
+import BookingItem from "@/components/booking-item"
 
 const Home = async () => {
   const barbershops = await db.barbershop.findMany({})
+  const PopularBarbershop = await db.barbershop.findMany({
+    orderBy: {
+      name: "desc",
+    },
+  })
   return (
     <div>
       <Header />
@@ -25,6 +29,21 @@ const Home = async () => {
             <SearchIcon />
           </Button>
         </div>
+
+        <div className="mt-6 flex gap-3 overflow-scroll [&::-webkit-scrollbar]:hidden">
+          {quickSearchOptions.map((option) => (
+            <Button key={option.title} className="gap-2" variant={"secondary"}>
+              <Image
+                src={option.imageUrl}
+                alt={option.title}
+                width={16}
+                height={16}
+              />
+              {option.title}
+            </Button>
+          ))}
+        </div>
+
         <div className="relative mt-6 h-[150px] w-full">
           <Image
             src="/banner-01.png"
@@ -34,32 +53,8 @@ const Home = async () => {
           />
         </div>
 
-        <h2 className="mb-3 mt-6 text-xs font-bold uppercase text-gray-400">
-          Agendamento
-        </h2>
-        <Card>
-          <CardContent className="flex justify-between p-0">
-            <div className="flex flex-col gap-2 py-5 pl-5">
-              <Badge className="w-fit">Confirmado</Badge>
-              <h3 className="text-sm font-semibold">Corte de cabelo</h3>
-              <div className="flex items-center gap-2">
-                <Avatar className="h-6 w-6 rounded-full">
-                  <AvatarImage
-                    src="https://utfs.io/f/c97a2dc9-cf62-468b-a851-bfd2bdde775f-16p.png"
-                    className="h-6 w-6 rounded-full object-cover"
-                  />
-                  <AvatarFallback>FSW</AvatarFallback>
-                </Avatar>
-                <p className="text-sm">Barbearia FSW</p>
-              </div>
-            </div>
-            <div className="flex flex-col items-center justify-center border-l-2 border-solid px-5 text-center">
-              <p className="text-sm">Agosto</p>
-              <p className="text-2xl font-bold">05</p>
-              <p className="text-sm">20:00</p>
-            </div>
-          </CardContent>
-        </Card>
+        <BookingItem />
+
         <h2 className="mb-3 mt-6 text-xs font-bold uppercase text-gray-400">
           Recomendados
         </h2>
@@ -68,7 +63,27 @@ const Home = async () => {
             <BarberShopItems key={barbershop.id} barbershop={barbershop} />
           ))}
         </div>
+
+        <h2 className="mb-3 mt-6 text-xs font-bold uppercase text-gray-400">
+          Populares
+        </h2>
+        <div className="flex gap-4 overflow-auto [&::-webkit-scrollbar]:hidden">
+          {PopularBarbershop.map((barbershop) => (
+            <BarberShopItems key={barbershop.id} barbershop={barbershop} />
+          ))}
+        </div>
       </div>
+
+      <footer className="border-t border-gray-200">
+        <Card>
+          <CardContent className="px-5 py-6">
+            <p className="text-sm text-gray-500">
+              &copy; 2023 Copyright{" "}
+              <span className="font-semibold">FSW Barber</span>
+            </p>
+          </CardContent>
+        </Card>
+      </footer>
     </div>
   )
 }
