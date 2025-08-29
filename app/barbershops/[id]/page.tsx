@@ -3,6 +3,7 @@ import { db } from "@/lib/prisma"
 import { ChevronsLeftIcon, MapPinIcon, MenuIcon, StarIcon } from "lucide-react"
 import Image from "next/image"
 import Link from "next/link"
+import { notFound } from "next/navigation"
 
 interface BarberShopPageProps {
   params: {
@@ -16,6 +17,10 @@ const BarberShopPage = async ({ params }: BarberShopPageProps) => {
       id: params.id,
     },
   })
+
+  if (!barbershop) {
+    return notFound()
+  }
 
   return (
     <div>
@@ -50,6 +55,12 @@ const BarberShopPage = async ({ params }: BarberShopPageProps) => {
           <StarIcon className="fill-primary text-primary" size={18} />
           <p className="text-sm">5,0 (499 avaliações)</p>
         </div>
+      </div>
+
+      {/* DESCRIÇÃO */}
+      <div className="space-y-2 border-b border-solid p-5">
+        <h2 className="text-xs font-bold uppercase text-gray-400">Sobre nós</h2>
+        <p className="text-justify text-sm">{barbershop.description}</p>
       </div>
     </div>
   )
