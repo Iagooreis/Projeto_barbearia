@@ -1,10 +1,17 @@
 import Image from "next/image"
-import { HomeIcon, CalendarIcon, LogOutIcon } from "lucide-react"
+import { HomeIcon, CalendarIcon, LogOutIcon, LogInIcon } from "lucide-react"
 import { Button } from "./ui/button"
 import { SheetClose, SheetContent, SheetHeader, SheetTitle } from "./ui/sheet"
 import { quickSearchOptions } from "@/app/_constants/search"
-import { Avatar, AvatarImage } from "./ui/avatar"
 import Link from "next/link"
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "./ui/dialog"
 
 const SidebarSheet = () => {
   return (
@@ -13,14 +20,34 @@ const SidebarSheet = () => {
         <SheetTitle className="text-left">Menu</SheetTitle>
       </SheetHeader>
 
-      <div className="flex items-center gap-3 border-b border-solid py-5">
-        <Avatar>
+      <div className="flex items-center justify-between gap-3 border-b border-solid py-5">
+        <h2 className="font-bold">Olá, faça seu Login</h2>
+        <Dialog>
+          <DialogTrigger asChild>
+            <Button size="icon">
+              <LogInIcon />
+            </Button>
+          </DialogTrigger>
+          <DialogContent className="w-[90%]">
+            <DialogHeader>
+              <DialogTitle>Login</DialogTitle>
+              <DialogDescription>
+                Conecte-se usando sua conta do Google.
+              </DialogDescription>
+            </DialogHeader>
+            <Button variant="outline" className="gap-1 font-bold">
+              <Image src="/google.svg" alt="Google" width={18} height={18} />
+              Google
+            </Button>
+          </DialogContent>
+        </Dialog>
+        {/*<Avatar>
           <AvatarImage src="https://cdn.pixabay.com/photo/2016/11/29/13/14/attractive-1869761_1280.jpg"></AvatarImage>
         </Avatar>
         <div>
           <p className="font-bold">Iago Reis</p>
           <p className="text-xs">Iagooreis27@hotmail.com</p>
-        </div>
+        </div>*/}
       </div>
 
       <div className="flex flex-col gap-2 border-b border-solid py-5">
