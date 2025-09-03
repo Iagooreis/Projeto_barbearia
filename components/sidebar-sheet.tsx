@@ -15,7 +15,7 @@ import {
   DialogTrigger,
 } from "./ui/dialog"
 import { signIn } from "next-auth/react"
-import { Avatar, AvatarImage } from "@radix-ui/react-avatar"
+import { Avatar, AvatarImage } from "./ui/avatar"
 import { signOut, useSession } from "next-auth/react"
 
 const SidebarSheet = () => {

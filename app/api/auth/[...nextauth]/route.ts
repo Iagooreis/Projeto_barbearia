@@ -17,6 +17,17 @@ const handler = NextAuth({
       },
     }),
   ],
+  callbacks: {
+    async session({ session, user }) {
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      session.user = {
+        ...session.user,
+        id: user.id,
+      } as any
+
+      return session
+    },
+  },
 })
 
 export { handler as GET, handler as POST }
