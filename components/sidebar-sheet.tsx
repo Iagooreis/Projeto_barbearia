@@ -1,22 +1,22 @@
 "use client"
 
-import Image from "next/image"
-import { HomeIcon, CalendarIcon, LogOutIcon, LogInIcon } from "lucide-react"
 import { Button } from "./ui/button"
+import { CalendarIcon, HomeIcon, LogInIcon, LogOutIcon } from "lucide-react"
 import { SheetClose, SheetContent, SheetHeader, SheetTitle } from "./ui/sheet"
 import { quickSearchOptions } from "@/app/_constants/search"
 import Link from "next/link"
+import Image from "next/image"
 import { Dialog, DialogContent, DialogTrigger } from "./ui/dialog"
-import { Avatar, AvatarImage } from "./ui/avatar"
 import { signOut, useSession } from "next-auth/react"
+import { Avatar, AvatarImage } from "./ui/avatar"
 import SignInDialog from "./sign-on-dialog"
 
 const SidebarSheet = () => {
   const { data } = useSession()
-  const handleLogout = () => signOut()
+  const handleLogoutClick = () => signOut()
 
   return (
-    <SheetContent>
+    <SheetContent className="overflow-y-auto">
       <SheetHeader>
         <SheetTitle className="text-left">Menu</SheetTitle>
       </SheetHeader>
@@ -27,7 +27,6 @@ const SidebarSheet = () => {
             <Avatar>
               <AvatarImage src={data?.user?.image ?? ""} />
             </Avatar>
-
             <div>
               <p className="font-bold">{data.user.name}</p>
               <p className="text-xs">{data.user.email}</p>
@@ -35,14 +34,14 @@ const SidebarSheet = () => {
           </div>
         ) : (
           <>
-            <h2 className="font-bold">Olá, faça seu Login</h2>
+            <h2 className="font-bold">Olá, faça seu login!</h2>
             <Dialog>
               <DialogTrigger asChild>
                 <Button size="icon">
                   <LogInIcon />
                 </Button>
               </DialogTrigger>
-              <DialogContent className="w-[90vw]">
+              <DialogContent className="w-[90%]">
                 <SignInDialog />
               </DialogContent>
             </Dialog>
@@ -59,10 +58,14 @@ const SidebarSheet = () => {
             </Link>
           </Button>
         </SheetClose>
-        <Button className="justify-start gap-2" variant="ghost">
-          <CalendarIcon size={18} />
-          Agendamentos
-        </Button>
+        <SheetClose asChild>
+          <Button className="justify-start gap-2" variant="ghost" asChild>
+            <Link href="/bookings">
+              <CalendarIcon size={18} />
+              Agendamentos
+            </Link>
+          </Button>
+        </SheetClose>
       </div>
 
       <div className="flex flex-col gap-2 border-b border-solid py-5">
@@ -71,12 +74,12 @@ const SidebarSheet = () => {
             <Button className="justify-start gap-2" variant="ghost" asChild>
               <Link href={`/barbershops?service=${option.title}`}>
                 <Image
-                  src={option.imageUrl}
                   alt={option.title}
-                  width={18}
+                  src={option.imageUrl}
                   height={18}
+                  width={18}
                 />
-                {option.title}{" "}
+                {option.title}
               </Link>
             </Button>
           </SheetClose>
@@ -88,7 +91,7 @@ const SidebarSheet = () => {
           <Button
             variant="ghost"
             className="justify-start gap-2"
-            onClick={handleLogout}
+            onClick={handleLogoutClick}
           >
             <LogOutIcon size={18} />
             Sair da conta
@@ -98,4 +101,5 @@ const SidebarSheet = () => {
     </SheetContent>
   )
 }
+
 export default SidebarSheet
